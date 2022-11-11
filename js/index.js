@@ -1,5 +1,4 @@
 
-import { Equipos } from "./equipos.js";
 
 var host = "v1.basketball.api-sports.io";
 var key = "510d14a176b8062557cfa86f735abf14";
@@ -12,34 +11,40 @@ const contenedor = document.getElementById("contenedor")
 ListarEquipos();
 
     function ListarEquipos(){
-    
-        const arregloEquipos = [];
-
-        Equipos.forEach(equipo => {
+     
+        axios.get("https://localhost:7188/api/team")
             
-            // Imagen
-            const imagen = document.createElement('img');
-            imagen.src = equipo.logo;
-            imagen.setAttribute('id', equipo.id);
-            imagen.className = "img-fluid mx-auto d-block";
-            imagen.style = "width: 70px;"
+            .then( (response) => {
 
-            // 
-            const titulo = document.createElement('p');
-            titulo.textContent = equipo.name;
-            titulo.className = "text-center";
+                const arregloEquipos = [];
+                const miArregloAPI = response.data
+               
+                miArregloAPI.forEach(equipo => {
 
-            //
-            const lista = document.createElement('div');
-            lista.setAttribute('id', equipo.id);
-            lista.className = "divTeam m-3 rounded";
+                    // Imagen
+                    const imagen = document.createElement('img');
+                    imagen.src = equipo.urlLogo;
+                    imagen.setAttribute('id', equipo.id);
+                    imagen.className = "img-fluid mx-auto d-block";
+                    imagen.style = "width: 70px;"
 
-            lista.append(imagen, titulo);
-            arregloEquipos.push(lista);
-        });
+                    // 
+                    const titulo = document.createElement('p');
+                    titulo.textContent = equipo.name;
+                    titulo.className = "text-center";
 
-        contenedor.append(...arregloEquipos);
+                    //
+                    const lista = document.createElement('div');
+                    lista.setAttribute('id', equipo.id);
+                    lista.className = "divTeam m-3 rounded";
 
+                    lista.append(imagen, titulo);
+                    arregloEquipos.push(lista);
+                });
+
+                contenedor.append(...arregloEquipos);
+
+            });
     }
 
 btnApi.addEventListener('click', () => {
